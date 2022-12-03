@@ -35,6 +35,16 @@ crowouts = {
     off_fn = function(note)
       crow.ii.ansible.trigger( 1 ,0  )
       end
+      },
+    { 
+    name="Crow JF CV/G 1",
+    on_fn = function(note,velocity)
+		crow.ii.jf.play_note(note/12,velocity)
+      end
+    ,
+    off_fn = function(note)
+      crow.ii.jf.play_note(note/12,0)
+      end
       }
   }
   
