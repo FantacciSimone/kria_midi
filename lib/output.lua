@@ -150,6 +150,12 @@ function output:add_params()
             self:note_off(i,self.noteons[i].note,self.noteons[i].velocity)
           end
           self.crowsel[i] = n
+		  
+		  if n==4 then
+			crow.ii.pullup(true)
+			crow.ii.jf.mode(1)
+		  end
+		  
         end
       }
       if i < self.n then 
