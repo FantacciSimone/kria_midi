@@ -5,45 +5,55 @@ local defaultoutputconfig = [[
 crowouts = {
   { 
     name="Crow CV/G 1 & 2 ",
-    on_fn = function(note,velocity)
+    on_fn = function(voice,note,velocity)
         crow.output[1].volts = note/12
         crow.output[2].volts = 8
       end
       ,
-      off_fn = function(note)
+      off_fn = function(voice,note)
         crow.output[2].volts = 0
       end
       },
     { 
     name="Crow CV/G 3 & 4 ",
-    on_fn = function(note,velocity)
+    on_fn = function(voice,note,velocity)
         crow.output[3].volts = note/12
         crow.output[4].volts = 8
       end
       ,
-      off_fn = function(note)
+      off_fn = function(voice,note)
         crow.output[4].volts = 0
       end
       },
     { 
     name="Crow Ansible CV/G 1",
-    on_fn = function(note,velocity)
+    on_fn = function(voice,note,velocity)
         crow.ii.ansible.trigger( 1 ,1  )
         crow.ii.ansible.cv( 1, note/12)
       end
     ,
-    off_fn = function(note)
+    off_fn = function(voice,note)
       crow.ii.ansible.trigger( 1 ,0  )
       end
       },
     { 
-    name="Crow JF CV/G 1",
-    on_fn = function(note,velocity)
+    name="Crow JF Poly4",
+    on_fn = function(voice,note,velocity)
 		crow.ii.jf.play_note(note/12,velocity)
       end
     ,
-    off_fn = function(note)
+    off_fn = function(voice,note)
       crow.ii.jf.play_note(note/12,0)
+      end
+      },
+    { 
+    name="Crow JF VoX",
+    on_fn = function(voice,note,velocity)
+		crow.ii.jf.play_voice(voice,note/12,velocity)
+      end
+    ,
+    off_fn = function(voice,note)
+      crow.ii.jf.play_voice(voice,note/12,0)
       end
       }
   }
@@ -170,7 +180,7 @@ function output:note_on(track,note,velocity )
     -- midi
     self.devices[self.mididevice[track]]:note_on(note,100,self.midichannel[track])
   else 
-    self.crowouts[self.crowsel[track]].on_fn(note,velocity)
+    self.crowouts[self.crowsel[track]].on_fn(track,note,velocity)
   end
 end
 
@@ -180,7 +190,7 @@ function output:note_off(track,note,velocity )
     -- midi
     self.devices[self.mididevice[track]]:note_off(note,0,self.midichannel[track])
   else 
-    self.crowouts[self.crowsel[track]].off_fn(note,velocity)
+    self.crowouts[self.crowsel[track]].off_fn(track,note,velocity)
   end
 end
   
