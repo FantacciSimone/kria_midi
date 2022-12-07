@@ -161,7 +161,7 @@ function output:add_params()
           end
           self.crowsel[i] = n
 		  
-		  if n==4 then
+		  if n==4 or n==5 then
 			crow.ii.pullup(true)
 			crow.ii.jf.mode(1)
 		  end
